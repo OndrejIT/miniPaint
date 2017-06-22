@@ -94,6 +94,19 @@ function EFFECTS_CLASS() {
 		POP.add({name: "param2", title: "V Radius:", value: "3", range: [1, 20]});
 		POP.add({name: "param3", title: "Quality:", value: "2", range: [1, 10]});
 		POP.effects = true;
+
+		var selected_x = DRAW.select_data.x;
+		var selected_y = DRAW.select_data.y;
+		var selected_w = DRAW.select_data.w;
+		var selected_h = DRAW.select_data.h;
+
+		if (DRAW.select_data.x === undefined) {
+			selected_x = 0;
+			selected_y = 0;
+			selected_w = WIDTH;
+			selected_h = HEIGHT;
+		}
+
 		POP.show('Blur-Box',
 			function (user_response) {
 				EDIT.save_state();
@@ -101,18 +114,31 @@ function EFFECTS_CLASS() {
 				var param2 = parseInt(user_response.param2);
 				var param3 = parseInt(user_response.param3);
 
-				var imageData = canvas_active().getImageData(0, 0, WIDTH, HEIGHT);
+				var imageData = canvas_active().getImageData(selected_x, selected_y, selected_w, selected_h);
 				var filtered = ImageFilters.BoxBlur(imageData, param1, param2, param3);	//add effect
-				canvas_active().putImageData(filtered, 0, 0);
+				canvas_active().putImageData(filtered, selected_x, selected_y);
 				GUI.zoom();
 			},
 			function (user_response, canvas_preview, w, h) {
+
+				var preview_x = (w / WIDTH) * selected_x;
+				var preview_y = (h / HEIGHT) * selected_y;
+				var preview_h = (h / HEIGHT) * selected_h;
+				var preview_w = (w / WIDTH) * selected_w;
+
+				if (DRAW.select_data.x === undefined) {
+					preview_x = 0;
+					preview_y = 0;
+					preview_h = h;
+					preview_w = w;
+				}
+
 				var param1 = parseInt(user_response.param1);
 				var param2 = parseInt(user_response.param2);
 				var param3 = parseInt(user_response.param3);
-				var imageData = canvas_preview.getImageData(0, 0, w, h);
+				var imageData = canvas_preview.getImageData(preview_x, preview_y, preview_w, preview_h);
 				var filtered = ImageFilters.BoxBlur(imageData, param1, param2, param3);	//add effect
-				canvas_preview.putImageData(filtered, 0, 0);
+				canvas_preview.putImageData(filtered, preview_x, preview_y);
 			}
 		);
 	};
@@ -120,22 +146,48 @@ function EFFECTS_CLASS() {
 	this.effects_GaussianBlur = function () {
 		POP.add({name: "param1", title: "Strength:", value: "2", range: [1, 4], step: 0.1});
 		POP.effects = true;
+
+		var selected_x = DRAW.select_data.x;
+		var selected_y = DRAW.select_data.y;
+		var selected_w = DRAW.select_data.w;
+		var selected_h = DRAW.select_data.h;
+
+		if (DRAW.select_data.x === undefined) {
+			selected_x = 0;
+			selected_y = 0;
+			selected_w = WIDTH;
+			selected_h = HEIGHT;
+		}
+
 		POP.show('Blur-Gaussian',
 			function (user_response) {
 				EDIT.save_state();
 				var param1 = parseFloat(user_response.param1);
 
-				var imageData = canvas_active().getImageData(0, 0, WIDTH, HEIGHT);
+				var imageData = canvas_active().getImageData(selected_x, selected_y, selected_w, selected_h);
 				var filtered = ImageFilters.GaussianBlur(imageData, param1);	//add effect
-				canvas_active().putImageData(filtered, 0, 0);
+				canvas_active().putImageData(filtered, selected_x, selected_y);
 				GUI.zoom();
 			},
 			function (user_response, canvas_preview, w, h) {
+
+				var preview_x = (w / WIDTH) * selected_x;
+				var preview_y = (h / HEIGHT) * selected_y;
+				var preview_h = (h / HEIGHT) * selected_h;
+				var preview_w = (w / WIDTH) * selected_w;
+
+				if (DRAW.select_data.x === undefined) {
+					preview_x = 0;
+					preview_y = 0;
+					preview_h = h;
+					preview_w = w;
+				}
+
 				var param1 = parseFloat(user_response.param1);
 
-				var imageData = canvas_preview.getImageData(0, 0, w, h);
+				var imageData = canvas_preview.getImageData(preview_x, preview_y, preview_w, preview_h);
 				var filtered = ImageFilters.GaussianBlur(imageData, param1);	//add effect
-				canvas_preview.putImageData(filtered, 0, 0);
+				canvas_preview.putImageData(filtered, preview_x, preview_y);
 			}
 		);
 	};
@@ -143,32 +195,71 @@ function EFFECTS_CLASS() {
 	this.effects_StackBlur = function () {
 		POP.add({name: "param1", title: "Radius:", value: "6", range: [1, 40]});
 		POP.effects = true;
+
+		var selected_x = DRAW.select_data.x;
+		var selected_y = DRAW.select_data.y;
+		var selected_w = DRAW.select_data.w;
+		var selected_h = DRAW.select_data.h;
+
+		if (DRAW.select_data.x === undefined) {
+			selected_x = 0;
+			selected_y = 0;
+			selected_w = WIDTH;
+			selected_h = HEIGHT;
+		}
+
 		POP.show('Blur-Stack',
 			function (user_response) {
 				EDIT.save_state();
 				var param1 = parseInt(user_response.param1);
 
-				var imageData = canvas_active().getImageData(0, 0, WIDTH, HEIGHT);
+				var imageData = canvas_active().getImageData(selected_x, selected_y, selected_w, selected_h);
 				var filtered = ImageFilters.StackBlur(imageData, param1);	//add effect
-				canvas_active().putImageData(filtered, 0, 0);
+				canvas_active().putImageData(filtered, selected_x, selected_y);
 				GUI.zoom();
 			},
 			function (user_response, canvas_preview, w, h) {
+
+				var preview_x = (w / WIDTH) * selected_x;
+				var preview_y = (h / HEIGHT) * selected_y;
+				var preview_h = (h / HEIGHT) * selected_h;
+				var preview_w = (w / WIDTH) * selected_w;
+
+				if (DRAW.select_data.x === undefined) {
+					preview_x = 0;
+					preview_y = 0;
+					preview_h = h;
+					preview_w = w;
+				}
+
 				var param1 = parseInt(user_response.param1);
-				var imageData = canvas_preview.getImageData(0, 0, w, h);
+				var imageData = canvas_preview.getImageData(preview_x, preview_y, preview_w, preview_h);
 				var filtered = ImageFilters.StackBlur(imageData, param1);	//add effect
-				canvas_preview.putImageData(filtered, 0, 0);
+				canvas_preview.putImageData(filtered, preview_x, preview_y);
 			}
 		);
 	};
 
 	this.effects_zoomblur = function () {
 		this.load_fx();
-		
+
 		POP.add({name: "param1", title: "Strength:", value: "0.3", range: [0, 1], step: 0.01});
 		POP.add({name: "param2", title: "Center x:", value: Math.round(WIDTH / 2), range: [0, WIDTH]});
 		POP.add({name: "param3", title: "Center y:", value: Math.round(HEIGHT / 2), range: [0, HEIGHT]});
 		POP.effects = true;
+
+		var selected_x = DRAW.select_data.x;
+		var selected_y = DRAW.select_data.y;
+		var selected_w = DRAW.select_data.w;
+		var selected_h = DRAW.select_data.h;
+
+		if (DRAW.select_data.x === undefined) {
+			selected_x = 0;
+			selected_y = 0;
+			selected_w = WIDTH;
+			selected_h = HEIGHT;
+		}
+
 		POP.show('Blur-Zoom',
 			function (user_response) {
 				EDIT.save_state();
@@ -176,13 +267,26 @@ function EFFECTS_CLASS() {
 				var param2 = parseInt(user_response.param2);
 				var param3 = parseInt(user_response.param3);
 
-				var texture = fx_filter.texture(canvas_active(true));
+				var texture = fx_filter.texture(canvas_active().getImageData(selected_x, selected_y, selected_w, selected_h));
 				fx_filter.draw(texture).zoomBlur(param2, param3, param1).update();	//effect
-				canvas_active().clearRect(0, 0, WIDTH, HEIGHT);
-				canvas_active().drawImage(fx_filter, 0, 0);
+				canvas_active().clearRect(selected_x, selected_y, selected_w, selected_h);
+				canvas_active().drawImage(fx_filter, selected_x, selected_y);
 				GUI.zoom();
 			},
 			function (user_response, canvas_preview, w, h) {
+
+				var preview_x = (w / WIDTH) * selected_x;
+				var preview_y = (h / HEIGHT) * selected_y;
+				var preview_h = (h / HEIGHT) * selected_h;
+				var preview_w = (w / WIDTH) * selected_w;
+
+				if (DRAW.select_data.x === undefined) {
+					preview_x = 0;
+					preview_y = 0;
+					preview_h = h;
+					preview_w = w;
+				}
+
 				var param1 = parseFloat(user_response.param1);
 				var param2 = parseInt(user_response.param2);
 				var param3 = parseInt(user_response.param3);
@@ -191,9 +295,9 @@ function EFFECTS_CLASS() {
 				param2 = param2 / WIDTH * w;
 				param3 = param3 / HEIGHT * h;
 
-				var texture = fx_filter.texture(canvas_preview.getImageData(0, 0, w, h));
+				var texture = fx_filter.texture(canvas_preview.getImageData(preview_x, preview_y, preview_w, preview_h));
 				fx_filter.draw(texture).zoomBlur(param2, param3, param1).update();	//effect
-				canvas_preview.drawImage(fx_filter, 0, 0);
+				canvas_preview.drawImage(fx_filter, preview_x, preview_y);
 
 				//draw circle
 				canvas_preview.beginPath();
